@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Day Gecko</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Sans+KR:wght@300;400;500&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#060d1a;--surface:#0a1428;--surface2:#0f1c34;--accent:#40d8f8;--accent2:#90eeff;--gold:#f8e040;--text:#b8e0f8;--muted:#3878a8;--border:#143058;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;padding-bottom:60px;}
+body.en{font-family:'Inter',sans-serif;}
+.lang-bar{position:sticky;top:0;z-index:100;background:rgba(0,0,0,0.75);backdrop-filter:blur(8px);padding:10px 20px;display:flex;justify-content:flex-end;}
+.lang-btn{display:flex;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;}
+.lang-btn button{padding:6px 16px;font-size:12px;font-weight:500;border:none;background:transparent;color:var(--muted);cursor:pointer;letter-spacing:0.5px;transition:all 0.2s;}
+.lang-btn button.active{background:var(--accent);color:#0a0a0a;font-weight:500;}
+.hero{position:relative;height:260px;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 25% 65%,rgba(64,216,248,0.2) 0%,transparent 52%),linear-gradient(170deg,#0a1830 0%,#060d1a 100%);}
+.hero-bg::after{content:'';position:absolute;inset:0;background-image:repeating-linear-gradient(-32deg,transparent 0px,transparent 15px,rgba(64,216,248,0.03) 15px,rgba(64,216,248,0.03) 16px);}
+.hero-content{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding:0 24px 28px;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(64,216,248,0.1);border:1px solid rgba(64,216,248,0.25);color:var(--accent);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;padding:5px 12px;border-radius:20px;margin-bottom:12px;width:fit-content;}
+.hero-name{font-family:'Playfair Display',serif;font-size:34px;line-height:1.05;color:#fff;}
+.hero-name span{color:var(--accent);}
+.hero-sci{font-family:'Playfair Display',serif;font-style:italic;font-size:14px;color:var(--muted);margin-top:5px;}
+.hero-illo{position:absolute;right:16px;bottom:16px;font-size:100px;opacity:0.75;filter:drop-shadow(0 0 28px rgba(64,216,248,0.5));animation:breathe 5s ease-in-out infinite;z-index:1;}
+@keyframes breathe{0%,100%{transform:rotate(-5deg) translateY(0)}50%{transform:rotate(3deg) translateY(-10px)}}
+.body{padding:24px 20px 0;max-width:480px;margin:0 auto;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:24px;}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 6px;text-align:center;}
+.stat-val{font-family:'Playfair Display',serif;font-size:17px;color:var(--accent2);display:block;line-height:1;}
+.stat-key{font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-top:4px;display:block;}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:18px 20px;margin-bottom:12px;}
+.card-title{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);font-weight:500;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.card-title::after{content:'';flex:1;height:1px;background:var(--border);}
+.card p{font-size:13.5px;line-height:1.8;color:#88c0d8;font-weight:300;}
+.origin{display:flex;align-items:center;gap:12px;background:var(--surface2);border-radius:12px;padding:14px 16px;margin-bottom:12px;border:1px solid var(--border);}
+.origin-flag{font-size:28px;}
+.origin-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.origin-val{font-size:13.5px;color:var(--text);}
+.habitat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+.habitat-item{background:var(--surface2);border-radius:10px;padding:12px 14px;display:flex;align-items:flex-start;gap:10px;}
+.habitat-icon{font-size:20px;flex-shrink:0;margin-top:1px;}
+.habitat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;display:block;margin-bottom:2px;}
+.habitat-val{font-size:13px;color:var(--text);font-weight:400;}
+.diet-item{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.diet-item:last-child{margin-bottom:0;}
+.diet-icon{font-size:18px;flex-shrink:0;}
+.diet-label{font-size:13px;color:#88c0d8;flex:1;}
+.bar-track{width:70px;height:5px;background:var(--border);border-radius:3px;flex-shrink:0;}
+.bar-fill{height:5px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold));}
+.tags{display:flex;flex-wrap:wrap;gap:7px;}
+.tag{background:rgba(64,216,248,0.1);border:1px solid rgba(64,216,248,0.25);color:var(--accent2);font-size:11.5px;padding:5px 12px;border-radius:20px;}
+.funfact{border-left:3px solid var(--accent);background:linear-gradient(to right,rgba(64,216,248,0.08),transparent);border-radius:0 12px 12px 0;padding:14px 16px;margin-top:12px;}
+.funfact-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:5px;}
+.funfact p{font-size:13px;color:#88c0d8;line-height:1.75;font-weight:300;}
+.funfact p strong{color:var(--accent2);font-weight:400;}
+.badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:5px 12px;border-radius:8px;margin-top:10px;}
+.kr{display:block;}.en-t{display:none;}
+body.en .kr{display:none;}body.en .en-t{display:block;}
+span.kr{display:inline;}span.en-t{display:none;}
+body.en span.kr{display:none;}body.en span.en-t{display:inline;}
+</style>
+</head>
+<body id="body">
+<div class="lang-bar">
+  <div class="lang-btn">
+    <button id="btn-kr" class="active" onclick="setLang('kr')">🇰🇷 한국어</button>
+    <button id="btn-en" onclick="setLang('en')">🇬🇧 English</button>
+  </div>
+</div>
+<div class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-illo">🦎</div>
+  <div class="hero-content">
+    <div class="hero-tag"><span class="kr">● Live Animal · 생물</span><span class="en-t">● Live Animal</span></div>
+    <div class="hero-name"><span class="kr">네온데이게코 <span>Neon Day Gecko</span></span><span class="en-t">Neon Day <span>Gecko</span></span></div>
+    <div class="hero-sci">Phelsuma klemmeri</div>
+  </div>
+</div>
+<div class="body">
+  <div class="stats"><div class="stat"><span class="stat-val">10cm</span><span class="stat-key kr">최대 전장</span><span class="stat-key en-t">Max Length</span></div><div class="stat"><span class="stat-val">15년</span><span class="stat-key kr">수명</span><span class="stat-key en-t">Lifespan</span></div><div class="stat"><span class="stat-val">70%</span><span class="stat-key kr">습도</span><span class="stat-key en-t">Humidity</span></div><div class="stat"><span class="stat-val">29°C</span><span class="stat-key kr">바스킹</span><span class="stat-key en-t">Basking</span></div></div>
+  <div class="origin">
+    <div class="origin-flag">🌍</div>
+    <div>
+      <div class="origin-label kr">원산지 · Origin</div>
+      <div class="origin-label en-t">Origin</div>
+      <div class="origin-val kr">마다가스카르 북서부 — 대나무 해안림</div>
+      <div class="origin-val en-t">NW Madagascar — coastal bamboo forests</div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-title kr">소개</div>
+    <div class="card-title en-t">About</div>
+    <p class="kr"><strong>노란 머리와 청록색 몸통</strong>의 강렬한 색 대비가 특징인 초소형 데이게코입니다. 마다가스카르 북서부 대나무 숲 두 곳에서만 서식하며, 야생에서는 개체 수가 매우 적습니다.</p>
+    <p class="en-t">One of the smallest day geckos, instantly recognizable by its vivid <strong>yellow head and turquoise-blue body</strong> with black side stripes. Endemic to just two tiny regions of NW Madagascar, where it lives almost exclusively on bamboo.</p>
+    <div class="badge" style="background:rgba(240,80,80,0.1);border:1px solid rgba(240,80,80,0.3);color:#f08080"><span class="kr">🔴 IUCN 위기종 (Endangered)</span><span class="en-t">🔴 IUCN Endangered</span></div>
+  </div>
+  <div class="card">
+    <div class="card-title kr">사육 환경</div>
+    <div class="card-title en-t">Housing</div>
+    <div class="habitat-grid"><div class="habitat-item"><span class="habitat-icon">🌡</span><div><span class="habitat-label kr">주간 온도</span><span class="habitat-label en-t">Day Temp</span><span class="habitat-val kr">24~28°C</span><span class="habitat-val en-t">24–28°C</span></div></div><div class="habitat-item"><span class="habitat-icon">☀️</span><div><span class="habitat-label kr">바스킹</span><span class="habitat-label en-t">Basking</span><span class="habitat-val kr">27~29°C</span><span class="habitat-val en-t">27–29°C</span></div></div><div class="habitat-item"><span class="habitat-icon">💧</span><div><span class="habitat-label kr">습도</span><span class="habitat-label en-t">Humidity</span><span class="habitat-val kr">60~80%</span><span class="habitat-val en-t">60–80%</span></div></div><div class="habitat-item"><span class="habitat-icon">🎋</span><div><span class="habitat-label kr">비바리움</span><span class="habitat-label en-t">Vivarium</span><span class="habitat-val kr">대나무 필수</span><span class="habitat-val en-t">Bamboo essential</span></div></div><div class="habitat-item"><span class="habitat-icon">💡</span><div><span class="habitat-label kr">UVB 조명</span><span class="habitat-label en-t">UVB Lighting</span><span class="habitat-val kr">필수 · 12시간</span><span class="habitat-val en-t">Required · 12 hrs</span></div></div><div class="habitat-item"><span class="habitat-icon">📏</span><div><span class="habitat-label kr">최소 크기</span><span class="habitat-label en-t">Min. Size</span><span class="habitat-val">30×30×45cm</span></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title kr">먹이</div>
+    <div class="card-title en-t">Diet</div>
+    <div class="diet-item"><span class="diet-icon">🦟</span><span class="diet-label kr">초파리 · 소형 귀뚜라미</span><span class="diet-label en-t">Fruit flies · Small crickets</span><div class="bar-track"><div class="bar-fill" style="width:90%"></div></div></div><div class="diet-item"><span class="diet-icon">🍌</span><span class="diet-label kr">게코 다이어트 (CGD)</span><span class="diet-label en-t">Crested gecko diet</span><div class="bar-track"><div class="bar-fill" style="width:65%"></div></div></div><div class="diet-item"><span class="diet-icon">🌸</span><span class="diet-label kr">꿀 · 꽃가루 (간식)</span><span class="diet-label en-t">Nectar / pollen (treat)</span><div class="bar-track"><div class="bar-fill" style="width:25%"></div></div></div><div class="diet-item"><span class="diet-icon">🦴</span><span class="diet-label kr">칼슘·비타민 더스팅 필수</span><span class="diet-label en-t">Calcium & vitamin dusting required</span><div class="bar-track"><div class="bar-fill" style="width:100%"></div></div></div>
+  </div>
+  <div class="card">
+    <div class="card-title kr">특징</div>
+    <div class="card-title en-t">Key Facts</div>
+    <div class="tags"><span class="tag kr">💛 노란 머리</span><span class="tag en-t">💛 Yellow head</span><span class="tag kr">🩵 청록 몸통</span><span class="tag en-t">🩵 Turquoise body</span><span class="tag kr">🎋 대나무 선호</span><span class="tag en-t">🎋 Bamboo-dweller</span><span class="tag kr">☀️ 주행성</span><span class="tag en-t">☀️ Diurnal</span><span class="tag kr">⚡ 매우 빠름</span><span class="tag en-t">⚡ Extremely fast</span><span class="tag kr">🔬 초소형</span><span class="tag en-t">🔬 Micro-sized</span></div>
+  </div>
+  <div class="funfact">
+    <div class="funfact-label kr">✦ 알고 계셨나요?</div>
+    <div class="funfact-label en-t">✦ Did You Know?</div>
+    <p class="kr">네온데이게코는 데이게코 속 중 가장 작은 종으로, 성체 크기가 <strong>고작 10cm</strong>에 불과합니다. 야생 서식지가 마다가스카르 <strong>두 곳</strong>에만 한정되어 있어요!</p>
+    <p class="en-t">The Neon Day Gecko is among the <strong>smallest day gecko species</strong>, reaching only 10cm as an adult. In the wild, its entire habitat is limited to just two tiny locations in Madagascar!</p>
+  </div>
+</div>
+<script>
+function setLang(l){document.getElementById('body').className=l==='en'?'en':'';document.getElementById('btn-kr').className=l==='kr'?'active':'';document.getElementById('btn-en').className=l==='en'?'active':'';localStorage.setItem('lang',l);}
+const s=localStorage.getItem('lang');if(s)setLang(s);
+</script>
+</body>
+</html>
